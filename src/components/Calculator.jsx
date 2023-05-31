@@ -6,8 +6,49 @@ import { useState } from "react";
 
 export default function Calculator() {
   const [num, setNum] = useState(0);
+  const [oldNum, setOldNum] = useState(0);
+  const [operator, setOperator] = useState();
 
-  
+  function inputNum(e) {
+    let inputValue = e.target.value;
+    num === 0 ? setNum(inputValue) : setNum(num + inputValue);
+  }
+
+  function clear() {
+    setNum(0);
+  }
+
+  function percentage() {
+    setNum(num / 100);
+  }
+
+  function changeSymbol() {
+    num > 0 ? setNum(-num) : setNum(Math.abs(num));
+  }
+
+  function operatorHadler(e) {
+    let operatorInput = e.target.value;
+    setOperator(operatorInput);
+    setOldNum(num);
+    setNum(0);
+  }
+
+  function calculate() {
+    switch (operator) {
+      case "/":
+        setNum(parserFloat(oldNum) / parseFloat(num));
+        break;
+      case "X":
+        setNum(parserFloat(oldNum) * parseFloat(num));
+        break;
+      case "-":
+        setNum(parserFloat(oldNum) - parseFloat(num));
+        break;
+      case "+":
+        setNum(parseFloat(oldNum) + parseFloat(num));
+        break;
+    }
+  }
 
   return (
     <div>
@@ -16,32 +57,64 @@ export default function Calculator() {
         <div className={wrapper}>
           <Box m={10} />
           <h1 className={result}>{num}</h1>
-          <button>Ac</button>
-          <button>+/-</button>
-          <button>%</button>
-          <button className={orange}>/</button>
+          <button onClick={clear}>Ac</button>
+          <button onClick={changeSymbol}>+/-</button>
+          <button onClick={percentage}>%</button>
+          <button className={orange} onClick={operatorHadler} value="/">
+            /
+          </button>
 
-          <button className={gray}>7</button>
-          <button className={gray}>8</button>
-          <button className={gray}>9</button>
-          <button className={orange}>X</button>
+          <button className={gray} onClick={inputNum} value={7}>
+            7
+          </button>
+          <button className={gray} onClick={inputNum} value={8}>
+            8
+          </button>
+          <button className={gray} onClick={inputNum} value={9}>
+            9
+          </button>
+          <button className={orange} onClick={operatorHadler} value="X">
+            X
+          </button>
 
-          <button className={gray}>4</button>
-          <button className={gray}>5</button>
-          <button className={gray}>6</button>
-          <button className={orange}>-</button>
+          <button className={gray} onClick={inputNum} value={4}>
+            4
+          </button>
+          <button className={gray} onClick={inputNum} value={5}>
+            5
+          </button>
+          <button className={gray} onClick={inputNum} value={6}>
+            6
+          </button>
+          <button className={orange} onClick={operatorHadler} value="-">
+            -
+          </button>
 
-          <button className={gray}>1</button>
-          <button className={gray}>2</button>
-          <button className={gray}>3</button>
-          <button className={orange}>+</button>
+          <button className={gray} onClick={inputNum} value={1}>
+            1
+          </button>
+          <button className={gray} onClick={inputNum} value={2}>
+            2
+          </button>
+          <button className={gray} onClick={inputNum} value={3}>
+            3
+          </button>
+          <button className={orange} onClick={operatorHadler} value="+">
+            +
+          </button>
 
-          <button className={gray}>0</button>
-          <button className={gray}>,</button>
+          <button className={gray} onClick={inputNum} value={0}>
+            0
+          </button>
+          <button className={gray} onClick={inputNum} value=".">
+            ,
+          </button>
           <button className={gray} style={{ visibility: "hidden" }}>
             ,
           </button>
-          <button>=</button>
+          <button className={orange} onClick={calculate}>
+            =
+          </button>
         </div>
       </Container>
     </div>
